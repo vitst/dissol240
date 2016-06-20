@@ -1,0 +1,11 @@
+#!/bin/bash
+
+: ${WM_PROJECT_DIR?"Set OpenFOAM environment first"}
+FOAM_SRC=$WM_PROJECT_DIR/src
+SRC=`pwd`                           # This directory
+
+mv $SRC/origFiles/data.H $FOAM_SRC/OpenFOAM/meshes/data/
+mv $SRC/origFiles/data.C $FOAM_SRC/OpenFOAM/meshes/data/
+rmdir origFiles
+
+echo "Done"

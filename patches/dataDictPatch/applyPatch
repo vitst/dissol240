@@ -1,0 +1,20 @@
+#!/bin/bash
+
+: ${WM_PROJECT_DIR?"Set OpenFOAM environment first"}
+FOAM_SRC=$WM_PROJECT_DIR/src
+SRC=`pwd`                           # This directory
+
+echo "Create backup copy? (y/n)"
+read test
+if [ "$test" == "y" ]; then
+    mkdir -p origFiles              # Create backup copy
+    cp -p $FOAM_SRC/OpenFOAM/meshes/data/data.H origFiles/
+    cp -p $FOAM_SRC/OpenFOAM/meshes/data/data.C origFiles/
+fi
+
+cp $SRC/files/data.H $FOAM_SRC/OpenFOAM/meshes/data/
+cp $SRC/files/data.C $FOAM_SRC/OpenFOAM/meshes/data/
+
+echo "Done"
+
+echo "Now OpenFOAM source should be recompiled!"

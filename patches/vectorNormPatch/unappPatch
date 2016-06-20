@@ -1,0 +1,12 @@
+#!/bin/bash
+
+: ${WM_PROJECT_DIR?"Set OpenFOAM environment first"}
+FOAM_SRC=$WM_PROJECT_DIR/src
+SRC=`pwd`                           # This directory
+
+mv $SRC/origFiles/lduMatrix.H $FOAM_SRC/OpenFOAM/matrices/lduMatrix/lduMatrix/
+mv $SRC/origFiles/lduMatrixSolver.C $FOAM_SRC/OpenFOAM/matrices/lduMatrix/lduMatrix/
+mv $SRC/origFiles/fvMatrixSolve.C $FOAM_SRC/finiteVolume/fvMatrices/fvMatrix/
+rmdir origFiles
+
+echo "Done"

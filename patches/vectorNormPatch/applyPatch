@@ -1,0 +1,21 @@
+#!/bin/bash
+
+: ${WM_PROJECT_DIR?"Set OpenFOAM environment first"}
+FOAM_SRC=$WM_PROJECT_DIR/src
+SRC=`pwd`                           # This directory
+
+echo "Create backup copy? (y/n)"
+read test
+if [ "$test" == "y" ]; then
+    mkdir -p origFiles              # Create backup copy
+    cp -p $FOAM_SRC/OpenFOAM/matrices/lduMatrix/lduMatrix/lduMatrix.H origFiles/
+    cp -p $FOAM_SRC/OpenFOAM/matrices/lduMatrix/lduMatrix/lduMatrixSolver.C origFiles/
+    cp -p $FOAM_SRC/finiteVolume/fvMatrices/fvMatrix/fvMatrixSolve.C origFiles/
+fi
+
+cp $SRC/files/lduMatrix.H $FOAM_SRC/OpenFOAM/matrices/lduMatrix/lduMatrix/
+cp $SRC/files/lduMatrixSolver.C $FOAM_SRC/OpenFOAM/matrices/lduMatrix/lduMatrix/
+cp $SRC/files/fvMatrixSolve.C $FOAM_SRC/finiteVolume/fvMatrices/fvMatrix/
+
+echo "Done"
+echo "Now OpenFOAM source should be recompiled!"
