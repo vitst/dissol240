@@ -1,0 +1,4 @@
+#!/bin/bash
+
+python /PATH/TO/YOUR/genBlockMeshDict/runGen.py "$@"
+
