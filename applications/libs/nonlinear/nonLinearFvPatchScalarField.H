@@ -23,7 +23,7 @@ License
     Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
   
 Class
-    Foam::danckwertsFvPatchScalarField
+    Foam::nonLinearFvPatchScalarField
 
 Description
     This is the patch for nonlinear boundary concentration field.
@@ -63,7 +63,7 @@ SeeAlso
     Foam::mixedFvPatchScalarField
 
 SourceFiles
-    danckwertsFvPatchScalarField.C
+    nonLinearFvPatchScalarField.C
 
   
 Contributors/Copyright:
@@ -71,10 +71,10 @@ Contributors/Copyright:
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef nonLinearFvPatchField_H
-#define nonLinearFvPatchField_H
+#ifndef nonLinearFvPatchScalarField_H
+#define nonLinearFvPatchScalarField_H
 
-#include "mixedFvPatchField.H"
+#include "mixedFvPatchFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -85,10 +85,9 @@ namespace Foam
                      Class nonLinearFvPatch Declaration
 \*---------------------------------------------------------------------------*/
 
-template<class Type>
-class nonLinearFvPatchField
+class nonLinearFvPatchScalarField
 :
-    public mixedFvPatchField<Type>
+    public mixedFvPatchScalarField
 {
 
 protected:
@@ -106,60 +105,60 @@ public:
     // Constructors
 
     //- Construct from patch and internal field
-    nonLinearFvPatchField
+    nonLinearFvPatchScalarField
     (
         const fvPatch&,
-        const DimensionedField<Type, volMesh>&
+        const DimensionedField<scalar, volMesh>&
     );
 
     //- Construct from patch, internal field and dictionary
-    nonLinearFvPatchField
+    nonLinearFvPatchScalarField
     (
         const fvPatch&,
-        const DimensionedField<Type, volMesh>&,
+        const DimensionedField<scalar, volMesh>&,
         const dictionary&
     );
 
-    //- Construct by mapping given nonLinearFvPatchField onto a new patch
-    nonLinearFvPatchField
+    //- Construct by mapping given nonLinearFvPatchScalarField onto a new patch
+    nonLinearFvPatchScalarField
     (
-        const nonLinearFvPatchField<Type>&,
+        const nonLinearFvPatchScalarField&,
         const fvPatch&,
-        const DimensionedField<Type, volMesh>&,
+        const DimensionedField<scalar, volMesh>&,
         const fvPatchFieldMapper&
     );
 
     //- Construct as copy
-    nonLinearFvPatchField
+    nonLinearFvPatchScalarField
     (
-        const nonLinearFvPatchField<Type>&
+        const nonLinearFvPatchScalarField&
     );
 
     //- Construct and return a clone
-    virtual tmp<fvPatchField<Type> > clone() const
+    virtual tmp< fvPatchScalarField > clone() const
         {
-            return tmp<fvPatchField<Type> >
+            return tmp<fvPatchScalarField >
                 (
-                    new nonLinearFvPatchField<Type>(*this)
+                    new nonLinearFvPatchScalarField(*this)
                 );
         }
 
     //- Construct as copy setting internal field reference
-    nonLinearFvPatchField
+    nonLinearFvPatchScalarField
     (
-        const nonLinearFvPatchField<Type>&,
-        const DimensionedField<Type, volMesh>&
+        const nonLinearFvPatchScalarField&,
+        const DimensionedField<scalar, volMesh>&
     );
 
     //- Construct and return a clone setting internal field reference
-    virtual tmp<fvPatchField<Type> > clone
+    virtual tmp<fvPatchScalarField > clone
     (
-        const DimensionedField<Type, volMesh>& iF
+        const DimensionedField<scalar, volMesh>& iF
     ) const
         {
-            return tmp<fvPatchField<Type> >
+            return tmp<fvPatchScalarField >
                 (
-                    new nonLinearFvPatchField<Type>(*this, iF)
+                    new nonLinearFvPatchScalarField(*this, iF)
                 );
         }
 
@@ -171,19 +170,12 @@ public:
     virtual void write(Ostream&) const;
 };
 
-
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    #ifdef NoRepository
-    #   include "nonLinearFvPatchField.C"
-    #endif
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-    #endif
+#endif
 
 // ************************************************************************* //

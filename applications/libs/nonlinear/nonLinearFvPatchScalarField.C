@@ -24,7 +24,7 @@ License
   
 \*---------------------------------------------------------------------------*/
 
-#include "nonLinearFvPatchField.H"
+#include "nonLinearFvPatchScalarField.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -33,62 +33,57 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-template<class Type>
-nonLinearFvPatchField<Type>::nonLinearFvPatchField
+nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 (
     const fvPatch& p,
-    const DimensionedField<Type, volMesh>& iF
+    const DimensionedField<scalar, volMesh>& iF
 )
 :
-    mixedFvPatchField<Type>(p, iF),
+    mixedFvPatchScalarField(p, iF),
     l_T(1.0),
     Cth(1.0),
     n1(1.0),
     n2(1.0)
 {
-    if(debug) {
-        Info << "nonLinearFvPatchField<Type>::nonLinearFvPatchField 1" << endl;
-    }
+  if(debug) {
+      Info << "nonLinearFvPatchScalarField::nonLinearFvPatchScalarField 1" << endl;
+  }
 
-    this->refValue() = pTraits<Type>::zero;
-    this->refGrad() = pTraits<Type>::zero;
-    this->valueFraction() = 1;
+  this->refValue() = pTraits<scalar>::zero;
+  this->refGrad() = pTraits<scalar>::zero;
+  this->valueFraction() = 1;
 }
 
-
-template<class Type>
-nonLinearFvPatchField<Type>::nonLinearFvPatchField
+nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 (
-    const nonLinearFvPatchField<Type>& ptf,
+    const nonLinearFvPatchScalarField& ptf,
     const fvPatch& p,
-    const DimensionedField<Type, volMesh>& iF,
+    const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
 )
 :
-    mixedFvPatchField<Type>(ptf, p, iF, mapper),
+    mixedFvPatchScalarField(ptf, p, iF, mapper),
     l_T(ptf.l_T),
     Cth(ptf.Cth),
     n1(ptf.n1),
     n2(ptf.n2)
 {
     if(debug) {
-        Info << "nonLinearFvPatchField<Type>::nonLinearFvPatchField 2" << endl;
+        Info << "nonLinearFvPatchScalarField::nonLinearFvPatchScalarField 2" << endl;
     }
 }
 
-
-template<class Type>
-nonLinearFvPatchField<Type>::nonLinearFvPatchField
+nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 (
     const fvPatch& p,
-    const DimensionedField<Type, volMesh>& iF,
+    const DimensionedField<scalar, volMesh>& iF,
     const dictionary& dict
 )
 :
-    mixedFvPatchField<Type>(p, iF)
+    mixedFvPatchScalarField(p, iF)
 {
   if(debug) {
-    Info << "nonLinearFvPatchField<Type>::nonLinearFvPatchField 3" << endl;
+    Info << "nonLinearFvPatchScalarField::nonLinearFvPatchScalarField 3" << endl;
   }
 
   l_T = 1.0;
@@ -97,7 +92,7 @@ nonLinearFvPatchField<Type>::nonLinearFvPatchField
   {
     Cth = 1.0;
     WarningIn(
-        "nonLinearFvPatchField<Type>::nonLinearFvPatchField"
+        "nonLinearFvPatchScalarField::nonLinearFvPatchScalarField"
         "("
         "const fvPatch& p,"
         "const DimensionedField<Type, volMesh>& iF,"
@@ -113,7 +108,7 @@ nonLinearFvPatchField<Type>::nonLinearFvPatchField
   {
     n1 = 1.0;
     WarningIn(
-        "nonLinearFvPatchField<Type>::nonLinearFvPatchField"
+        "nonLinearFvPatchScalarField::nonLinearFvPatchScalarField"
         "("
         "const fvPatch& p,"
         "const DimensionedField<Type, volMesh>& iF,"
@@ -129,7 +124,7 @@ nonLinearFvPatchField<Type>::nonLinearFvPatchField
   {
     n2 = 1.0;
     WarningIn(
-        "nonLinearFvPatchField<Type>::nonLinearFvPatchField"
+        "nonLinearFvPatchScalarField::nonLinearFvPatchScalarField"
         "("
         "const fvPatch& p,"
         "const DimensionedField<Type, volMesh>& iF,"
@@ -149,16 +144,16 @@ nonLinearFvPatchField<Type>::nonLinearFvPatchField
   
   if (dict.found("value"))
   {
-    fvPatchField<Type>::operator=
+    fvPatchField<scalar>::operator=
     (
-      Field<Type>("value", dict, p.size())
+      scalarField("value", dict, p.size())
     );
   }
   else
   {
-    fvPatchField<Type>::operator=(this->refValue());
+    fvPatchField<scalar>::operator=(this->refValue());
     WarningIn(
-        "nonLinearFvPatchField<Type>::nonLinearFvPatchField"
+        "nonLinearFvPatchScalarField<Type>::nonLinearFvPatchScalarField"
         "("
         "const fvPatch& p,"
         "const DimensionedField<Type, volMesh>& iF,"
@@ -171,27 +166,27 @@ nonLinearFvPatchField<Type>::nonLinearFvPatchField
   }
 
   if (dict.found("refValue"))
-    this->refValue() = Field<Type>("refValue", dict, p.size());
+    this->refValue() = scalarField("refValue", dict, p.size());
   else
   {
     if (dict.found("value")) {
       // make sure that refValue has a sensible value for the "update" below
-      this->refValue() = Field<Type>(this->patchInternalField());
+      this->refValue() = scalarField(this->patchInternalField());
     }
     else{
-      this->refValue() = pTraits<Type>::zero;
+      this->refValue() = pTraits<scalar>::zero;
     }
   }
   
   if(debug) {
-      Info << "nonLinearFvPatchField<Type>::nonLinearFvPatchField 2  "
+      Info << "nonLinearFvPatchScalarField<Type>::nonLinearFvPatchScalarField 2  "
               "refValue set" << endl;
   }
   
   if (dict.found("refGradient")) {
-      this->refGrad() = Field<Type>("refGradient", dict, p.size());
+      this->refGrad() = Field<scalar>("refGradient", dict, p.size());
   } else {
-      this->refGrad() = pTraits<Type>::zero;
+      this->refGrad() = pTraits<scalar>::zero;
   }
 
   if (dict.found("valueFraction")) {
@@ -202,10 +197,10 @@ nonLinearFvPatchField<Type>::nonLinearFvPatchField
   
   if (!this->updated())
   {
-    this->mixedFvPatchField<Type>::updateCoeffs();
+    this->mixedFvPatchScalarField::updateCoeffs();
   }
 
-  Field<Type>::operator=
+  Field<scalar>::operator=
                 (
                   this->valueFraction()*this->refValue()
                   +
@@ -216,53 +211,50 @@ nonLinearFvPatchField<Type>::nonLinearFvPatchField
                   )
                 );
   
-  fvPatchField<Type>::evaluate();
+  fvPatchField<scalar>::evaluate();
 }
 
 
-template<class Type>
-nonLinearFvPatchField<Type>::nonLinearFvPatchField
+nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 (
-    const nonLinearFvPatchField<Type>& ptf
+    const nonLinearFvPatchScalarField& ptf
 )
 :
-    mixedFvPatchField<Type>(ptf),
+    mixedFvPatchScalarField(ptf),
     l_T(ptf.l_T),
     Cth(ptf.Cth),
     n1(ptf.n1),
     n2(ptf.n2)
 {
   if(debug) {
-      Info << "nonLinearFvPatchField<Type>::nonLinearFvPatchField 4" << endl;
+      Info << "nonLinearFvPatchScalarField<Type>::nonLinearFvPatchScalarField 4" << endl;
   }
 }
 
 
-template<class Type>
-nonLinearFvPatchField<Type>::nonLinearFvPatchField
+nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 (
-    const nonLinearFvPatchField<Type>& ptf,
-    const DimensionedField<Type, volMesh>& iF
+    const nonLinearFvPatchScalarField& ptf,
+    const DimensionedField<scalar, volMesh>& iF
 )
 :
-    mixedFvPatchField<Type>(ptf, iF),
+    mixedFvPatchScalarField(ptf, iF),
     l_T(ptf.l_T),
     Cth(ptf.Cth),
     n1(ptf.n1),
     n2(ptf.n2)
 {
     if(debug) {
-        Info << "nonLinearFvPatchField<Type>::nonLinearFvPatchField 5" << endl;
+        Info << "nonLinearFvPatchScalarField<Type>::nonLinearFvPatchScalarField 5" << endl;
     }
 }
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-template<class Type>
-void nonLinearFvPatchField<Type>::updateCoeffs()
+void nonLinearFvPatchScalarField::updateCoeffs()
 {
   if(debug) {
-      Info << "nonLinearFvPatchField<Type>::updateCoeffs" << endl;
+      Info << "nonLinearFvPatchScalarField<Type>::updateCoeffs" << endl;
   }
   if (this->updated())
   {
@@ -270,13 +262,13 @@ void nonLinearFvPatchField<Type>::updateCoeffs()
   }
 
   if(debug) {
-      Info << "nonLinearFvPatchField<Type>::updateCoeffs - updating" << endl;
+      Info << "nonLinearFvPatchScalarField<Type>::updateCoeffs - updating" << endl;
   }
 
   const IOdictionary& iod = this->db().objectRegistry::template 
                             lookupObject<IOdictionary>("transportProperties");
   if( !iod.readIfPresent<scalar>("l_T", l_T) ){
-    SeriousErrorIn("nonLinearFvPatchField<Type>::nonLinearFvPatchField")
+    SeriousErrorIn("nonLinearFvPatchScalarField<Type>::nonLinearFvPatchScalarField")
             <<"There is no l_T parameter in transportProperties dictionary"
             <<exit(FatalError);
   }
@@ -285,7 +277,7 @@ void nonLinearFvPatchField<Type>::updateCoeffs()
       Info << "l_T: "<< l_T << endl;
   }
 
-  Field<Type>& val = *this;
+  Field<scalar>& val = *this;
 
   scalarField del = mag( 1. / this->patch().deltaCoeffs() );
 
@@ -322,27 +314,26 @@ void nonLinearFvPatchField<Type>::updateCoeffs()
     refGr[i]  = - R / l_T;
   }
 
-  this->refValue() = pTraits<Type>::one * refVal;
-  this->refGrad() = pTraits<Type>::one * refGr;
+  this->refValue() = pTraits<scalar>::one * refVal;
+  this->refGrad() = pTraits<scalar>::one * refGr;
   this->valueFraction() = f;
 
   if(debug) {
-    Field<Type> iF = this->patchInternalField();
-    Field<Type> newF = (1.0 - this->valueFraction()) * iF;
+    Field<scalar> iF = this->patchInternalField();
+    Field<scalar> newF = (1.0 - this->valueFraction()) * iF;
     scalar residual = ( max( mag( newF ) )<SMALL ) ? (1.0) : (max( mag( newF-val ) ) / max( mag( newF ) )) ;
     Info << "  Nonlinear boundary field residual " << residual << nl << nl;
   }
 
-  mixedFvPatchField<Type>::updateCoeffs();
+  mixedFvPatchScalarField::updateCoeffs();
 }
 
-template<class Type>
-void nonLinearFvPatchField<Type>::write(Ostream& os) const
+void nonLinearFvPatchScalarField::write(Ostream& os) const
 {
   if(debug) {
-    Info << "nonLinearFvPatchField<Type>::write" << endl;
+    Info << "nonLinearFvPatchScalarField<Type>::write" << endl;
   }
-  mixedFvPatchField<Type>::write(os);
+  mixedFvPatchScalarField::write(os);
   os.writeKeyword("Cth")<< Cth << token::END_STATEMENT << nl;
   os.writeKeyword("n1")<< n1 << token::END_STATEMENT << nl;
   os.writeKeyword("n2")<< n2 << token::END_STATEMENT << nl;
