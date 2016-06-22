@@ -1,0 +1,97 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    {
+        solver                  GAMG;
+        smoother                GaussSeidel;
+        cacheAgglomeration      true;
+        nCellsInCoarsestLevel   10;
+        agglomerator            faceAreaPair;
+        mergeLevels             1;
+        tolerance               1e-11;
+        relTol                  4e-1;
+    }
+
+    U
+    {
+
+        solver                  smoothSolver;
+        smoother                GaussSeidel;
+        tolerance               1e-11;
+        relTol                  0.4;
+        nSweeps                 10;
+/*
+        type                    coupled;
+        solver                  PBiCCCG;
+        preconditioner          DILU;
+        tolerance               (1e-9 1e-9 1e-9);
+        relTol                  (4e-1 4e-1 4e-1);
+*/
+    }
+
+    C
+    {
+        solver                  GAMG;
+        smoother                GaussSeidel;
+        agglomerator            faceAreaPair;
+        nCellsInCoarsestLevel   10;
+        mergeLevels             1;
+        tolerance               1e-12;
+        relTol                  1e-12;
+    }
+
+    cellMotionU
+    {
+        solver                  PCG;
+        preconditioner          DIC;
+        tolerance               1e-08;
+        relTol                  1e-03;
+    }
+}
+
+SIMPLE
+{
+    nNonOrthogonalCorrectors 	1;
+    residualControl
+    {
+        p                       1e-6;
+        U                       1e-6;
+    }
+}
+
+relaxationFactors
+{
+    fields
+    {
+        p                       0.1;
+    }
+    equations
+    {
+        U                       0.9;
+    }
+}
+
+convDiff
+{
+    convergence                 1e-7;
+    maxIter                     100;
+}
+
+// ************************************************************************* //

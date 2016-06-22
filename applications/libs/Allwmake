@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for d in */ ; do
+  if [ -d ${d}/Make ]; then
+    echo "Making library $d"
+    wmake libso $d
+  fi
+done

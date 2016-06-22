@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+names='libs solvers utilities'
+for name in $names; do
+    pushd $name
+    Allwclean
+    popd
+done
+

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "Cleaning all libraries"
+for d in */ ; do
+  if [ -d ${d}/Make ]; then
+    wclean $d
+  fi
+done
+

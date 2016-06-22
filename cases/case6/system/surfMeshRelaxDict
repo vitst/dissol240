@@ -1,0 +1,37 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     3.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      surfMeshRelaxDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dissolDebug            false;    // Solver flags
+fixInletWallEdgeDispl  true;
+
+relaxationTolerance    1e-6;     // displacement tolerance
+k_1                     1.0;
+k_2                     1.0;
+q_2                       1;      // Use k_2 every q_2 iterations
+q_norm_recalc             1;      // Recalculate surface normal 
+k_1edge                 1.0;
+k_2edge                 2.0;
+q_2edge                   2;      // Use k_2 every q_2 iterations
+q_edge_norm_recalc        1;      // Recalculate surface normal 
+
+// Time dependent grading (in Z): G = inigradingZ/(timeCoef*t+1)
+varG                    false;
+inigradingZ             7.25
+timeCoefZ               0.1;
+numberOfCellsZ          200;
+
+// ************************************************************************* //

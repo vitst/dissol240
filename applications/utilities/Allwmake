@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "Making utility dissolCalc"
+pushd dissolCalc
+Allwmake
+popd
+
+echo
+for d in */ ; do
+  if [ -d ${d}/Make ]; then
+    echo "Making utility $d"
+    wmake $d
+  fi
+done

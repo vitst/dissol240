@@ -1,0 +1,147 @@
+porousFoam v2
+
+This is a code for porous media dissolution using a Darcy-Brinkman flow
+solver. It is designed to have user programmable constitutive models,
+examples of which are in the Models subdirectory. It can also
+function as a 2D fracture aperture solver (with one mineral phase),
+using the porosity field (P=1-F0) as the scaled fracture aperture h/h0.
+
+Version 2 supports multiple mineral and concentration fields; the
+algorithm is explained in rates.pdf
+
+The external pressure gradient should always be in the x direction.
+There are some sample cases in porousCases_v2, which has its own README.
+The sole input fields are the mineral fractions F0, F1, etc. although
+other fields (p, U, C) need to be initialized and their boundary
+conditions defined.
+
+Version numbering follows a traditional pattern: the first digit
+indicates a major change with new functionality and possible changes
+in input/output; the second digit indicates minor improvements in
+functionality, code cleanup, and bugfixes; the third digit is for
+bug fixes. It is to be hoped that v2 will prove to be a stable
+version, but the code is still under development
+
+Changelog
+
+v2.1.1: 5/18/16 
+1) Bugfix: corrected derivative calculation in reacNonlinearFrac.H and
+reacNonLinear.H in transition region
+
+v2.1: 4/6/16 
+1) Pressure is now scaled by viscosity
+    Units in 0.org/p should be 1/time
+2) Use pressureInletVelocity condition on U
+
+v2: 1/28/16 
+1) Add multifield support for F and C
+2) Added general support for mineral and porosity limits
+3) Include danckwerts bc (replace danckwerts.H)
+4) Switch 0org/U to pressureInletVelocity boundary conditions
+5) Moved solver flags and parameters to a dictionary (porousFoamDict)
+6) Additional fields for multicomponent solver
+7) Removed unnecessary fields
+8) Kinv, R, dR, D converted to dimensioned fields
+9) Combined the flow solvers into one file (solveU.H)
+
+v1.0.1: 1/1/16
+1) Midpoint time stepping
+2) Added Dankwerts BC (danckwerts.H)
+3) Added aperture limiter
+4) Added nonlinear kinetics (reacNonLin.H)
+5) Added a flow limiter (Qmax)
+6) Reorganized and corrected startup
+
+------------------------------------------------------------------------
+
+Fields
+
+There are many fields in this code - see createFields.H
+The primary fields p, U, Cx, Fx (Fx is a mineral fraction) require
+input files (see 0org). The code allows for a number of (immobile) minerals
+(Fx) and aqueous concentrations (Cx).
+
+The secondary fields are created within the code; they don't require input
+files but P (porosity = 1-F) is output.  The secondary fields include
+pointers to multiple fields: Rx (reaction rates), dRx (rate constants),
+and dFx (increments in mineral fraction). In addition there is Kinv
+(inverse permeability), R (species rate), dR (species rate constant),
+and D (dispersion tensor).
+
+------------------------------------------------------------------------
+
+Scalings
+
+Pressure: unscaled
+For Darcy flow its scale is irrelevant. For
+Brinkman flows it may help convergence if the mean fluid velocity is
+approximately one. This means that the computed Uscale should be close
+to unity at t = 0.
+Velocity: Scaled so the mean velocity is 1 at t=0.
+With QCON=false, the pressure drop remains constant.
+With QCON=true, the flow rate is rescaled so <U> is always 1.
+The scaled mean velocity is limited to Qmax.
+Volume flux (phi): Scaled with U.
+Concentration: Scaled to a reference concentration, typically C_in.
+
+------------------------------------------------------------------------
+
+Constitutive models
+
+Some of the fields require a constitutive model: K, D, R.
+The user is expected to create their own model functions:
+permModel.H, dispModel.H, and reacModel.H. Simple examples are in the
+Models subdirectory. These functions must also calculate some auxiliary
+quantities like P (permModel.H) and dR (reacModel.H).
+
+The code now includes the limits imposed by the mineral concentrations
+and porosity in a general way (kinetics.H). In porous mode it ensures
+each mineral fraction remains positive and that the porosity remains
+above Pmin; in fracture mode it keeps the porosity below Pmax.
+
+The reaction model (reacModel.H) now needs to include a table of
+stoichiometry numbers as well as the rates and derivatives for each
+reaction. It needs to be programmed using autoPointers (CList etc.)
+to allow for multiple fields. There are example files in the Models
+directory.
+
+-----------------------------------------------------------------------
+
+2D fracture aperture model
+
+The code can be used for a 2D aperture model of a fracture by using
+the porosity field (P) to represent the scaled aperture h/h0. The
+variable Pmax then sets the largest value of h/h0. It is always on
+so a large value (say 1e6) is needed for unlimited aperture growth.
+The mesh must be two-dimensional with empty planes in Z, and the
+permeability should be cubic in P. The code still needs the input field
+F = 1-P, which is a little odd but not easily avoided.  It is similar
+to my old code dissol but faster (3X) and with better numerics for the
+concentration field (conservative flux); it can also run in parallel.
+A comparison with dissol is in porousCases/dissolComp.
+
+------------------------------------------------------------------------
+
+Notes:
+1) the output velocity field is calculated from the pressure gradient
+and it not conservative. You can sometimes see a discontinuity in the
+velocity near the inlet. However, the convective flux in the
+concentration solver is calculated using the surface volume flux
+field (phi) and is conservative.
+2) porousFOAM now uses a 2nd order (midpoint) time update.
+3) the reaction rate should be a smooth function of C (see reacNonLin.H)
+
+------------------------------------------------------------------------
+
+Darcy-Brinkmann model
+
+Notes:
+1) The SIMPLE algorithm (in the Darcy-Brinkman solver)
+does not converge well when there are large contrasts in porosity.
+I use quite small values of the underrelaxation of the pressure (< 0.01)
+to get convergence. There is substantial room for improvement here.
+
+------------------------------------------------------------------------
+
+
+Last modified 02/17/2016

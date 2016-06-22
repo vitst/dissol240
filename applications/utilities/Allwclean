@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "Cleaning dissolCalc"
+pushd dissolCalc
+Allwclean
+popd
+
+echo "Cleaning other utilities"
+for d in */ ; do
+  if [ -d ${d}/Make ]; then
+    wclean $d
+  fi
+done
+
