@@ -15,6 +15,5 @@ fi
 cp $SRC/files/data.H $FOAM_SRC/OpenFOAM/meshes/data/
 cp $SRC/files/data.C $FOAM_SRC/OpenFOAM/meshes/data/
 
-echo "Done"
+echo "Done: Recompile OpenFOAM source to apply patch"
 
-echo "Now OpenFOAM source should be recompiled!"

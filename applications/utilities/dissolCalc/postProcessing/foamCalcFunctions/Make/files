@@ -15,4 +15,4 @@ dissol/ellipse/ellipse.C
 dissol/fieldMap2D/fieldMap2D.C
 
 
-LIB = $(FOAM_LIBBIN)/libdissolCalcFunctions
+LIB = $(FOAM_USER_LIBBIN)/libdissolCalcFunctions

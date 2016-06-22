@@ -9,4 +9,5 @@ mv $SRC/origFiles/lduMatrixSolver.C $FOAM_SRC/OpenFOAM/matrices/lduMatrix/lduMat
 mv $SRC/origFiles/fvMatrixSolve.C $FOAM_SRC/finiteVolume/fvMatrices/fvMatrix/
 rmdir origFiles
 
-echo "Done"
+echo "Done: Recompile OpenFOAM source to restore original version"
+

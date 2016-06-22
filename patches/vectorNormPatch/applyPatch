@@ -17,5 +17,4 @@ cp $SRC/files/lduMatrix.H $FOAM_SRC/OpenFOAM/matrices/lduMatrix/lduMatrix/
 cp $SRC/files/lduMatrixSolver.C $FOAM_SRC/OpenFOAM/matrices/lduMatrix/lduMatrix/
 cp $SRC/files/fvMatrixSolve.C $FOAM_SRC/finiteVolume/fvMatrices/fvMatrix/
 
-echo "Done"
-echo "Now OpenFOAM source should be recompiled!"
+echo "Done: Recompile OpenFOAM source to apply patch"

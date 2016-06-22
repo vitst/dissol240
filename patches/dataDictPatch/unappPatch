@@ -8,4 +8,5 @@ mv $SRC/origFiles/data.H $FOAM_SRC/OpenFOAM/meshes/data/
 mv $SRC/origFiles/data.C $FOAM_SRC/OpenFOAM/meshes/data/
 rmdir origFiles
 
-echo "Done"
+echo "Done: Recompile OpenFOAM source to restore original version"
+
