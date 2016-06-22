@@ -26,24 +26,21 @@ License
 
 #include "nonLinearFvPatchScalarField.H"
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-namespace Foam
-{
+#include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
+Foam::nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
-    mixedFvPatchScalarField(p, iF),
-    l_T(1.0),
-    Cth(1.0),
-    n1(1.0),
-    n2(1.0)
+  mixedFvPatchScalarField(p, iF),
+  l_T(1.0),
+  Cth(1.0),
+  n1(1.0),
+  n2(1.0)
 {
   if(debug) {
       Info << "nonLinearFvPatchScalarField::nonLinearFvPatchScalarField 1" << endl;
@@ -54,7 +51,7 @@ nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
   this->valueFraction() = 1;
 }
 
-nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
+Foam::nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 (
     const nonLinearFvPatchScalarField& ptf,
     const fvPatch& p,
@@ -73,7 +70,7 @@ nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
     }
 }
 
-nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
+Foam::nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
@@ -215,7 +212,7 @@ nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 }
 
 
-nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
+Foam::nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 (
     const nonLinearFvPatchScalarField& ptf
 )
@@ -232,7 +229,7 @@ nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 }
 
 
-nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
+Foam::nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 (
     const nonLinearFvPatchScalarField& ptf,
     const DimensionedField<scalar, volMesh>& iF
@@ -251,7 +248,7 @@ nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-void nonLinearFvPatchScalarField::updateCoeffs()
+void Foam::nonLinearFvPatchScalarField::updateCoeffs()
 {
   if(debug) {
       Info << "nonLinearFvPatchScalarField<Type>::updateCoeffs" << endl;
@@ -328,7 +325,7 @@ void nonLinearFvPatchScalarField::updateCoeffs()
   mixedFvPatchScalarField::updateCoeffs();
 }
 
-void nonLinearFvPatchScalarField::write(Ostream& os) const
+void Foam::nonLinearFvPatchScalarField::write(Ostream& os) const
 {
   if(debug) {
     Info << "nonLinearFvPatchScalarField<Type>::write" << endl;
@@ -340,7 +337,11 @@ void nonLinearFvPatchScalarField::write(Ostream& os) const
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-} // End namespace Foam
-
-// ************************************************************************* //
+namespace Foam
+{
+  makePatchTypeField
+  (
+    fvPatchScalarField,
+    nonLinearFvPatchScalarField
+  );
+}
