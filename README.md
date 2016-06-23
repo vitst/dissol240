@@ -13,6 +13,7 @@ Installation:
 3) Run cases (approximate execution times in docs/SI.pdf)
 
 Notes:
+
     1) surfRoughGen may require paths to fftw3 library and header files
         edit applications/utilities/surfRoughGen/Make/options
 
