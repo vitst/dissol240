@@ -156,6 +156,7 @@ danckwertsFvPatchScalarField
     this->mixedFvPatchScalarField::updateCoeffs();
   }
   
+  /* 
   scalarField::operator=
       (
         this->valueFraction()*this->refValue()
@@ -166,6 +167,7 @@ danckwertsFvPatchScalarField
             + this->refGrad()/this->patch().deltaCoeffs()
         )
       );
+  */
 
   if(debug) {
       Info << "danckwertsFvPatchField<Type>::danckwertsFvPatchField 2  "

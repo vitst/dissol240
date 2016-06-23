@@ -197,6 +197,7 @@ Foam::nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
     this->mixedFvPatchScalarField::updateCoeffs();
   }
 
+  /*
   Field<scalar>::operator=
                 (
                   this->valueFraction()*this->refValue()
@@ -207,7 +208,7 @@ Foam::nonLinearFvPatchScalarField::nonLinearFvPatchScalarField
                     + this->refGrad()/this->patch().deltaCoeffs()
                   )
                 );
-  
+  */
   fvPatchField<scalar>::evaluate();
 }
 
