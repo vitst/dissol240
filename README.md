@@ -1,6 +1,6 @@
 # dissol240
 
-This repository contains all sources for the dissolFoam package.
+This repository contains all sources for the dissolFoam package
 The package has been tested with OpenFOAM v2.4.0
 
 Installation:
@@ -15,4 +15,5 @@ Notes:
     2) Some of the blockMeshDict files require v2.4.0 (for mesh grading)
     3) dissolFoam requires both the 0 and current directories to restart
     4) More information about the package can be found in docs/SI.pdf
+    5) Some sample movie files can be found in examples
 
